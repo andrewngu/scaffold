@@ -1,0 +1,27 @@
+{
+  "name": "advisor-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewngu/advisor-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrewngu/advisor-react/issues"
+  },
+  "homepage": "https://github.com/andrewngu/advisor-react#readme",
+  "dependencies": {
+    "browserify": "^11.0.1",
+    "gulp": "^3.9.0",
+    "gulp-react": "^3.0.1",
+    "gulp-sass": "^2.0.4",
+    "react": "^0.13.3",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
