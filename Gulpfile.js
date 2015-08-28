@@ -35,7 +35,13 @@ gulp.task('scripts', function() {
 gulp.task('connect', function() {
     connect.server({
         root: 'dist',
-        livereload: true
+        livereload: true,
+        middleware: function (connect, opt) {
+            var Proxy = require('gulp-connect-proxy');
+            opt.route = '/proxy';
+            var proxy = new Proxy(opt);
+            return [proxy];
+        }
     });
 });
 
