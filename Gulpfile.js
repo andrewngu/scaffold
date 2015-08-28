@@ -4,6 +4,7 @@ var sass = require('gulp-sass');
 var react = require('gulp-react');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var connect = require('gulp-connect');
 
 function getFiles(dir){
     return fs.readdirSync(dir);
@@ -28,6 +29,27 @@ gulp.task('scripts', function() {
         browserify([dir + file]).bundle()
         .pipe(source(file))
         .pipe(gulp.dest('./dist/js/'));
+    });
+});
+
+gulp.task('connect', function () {
+    connect.server({
+    root: [conf.dist],
+    port: 9000,
+    livereload: true,
+    middleware: function (connect, opt) {
+      var Proxy = require('gulp-connect-proxy');
+      opt.route = '/proxy';
+      var proxy = new Proxy(opt);
+      return [proxy];
+    }
+    });
+});
+
+gulp.task('connect', function() {
+    connect.server({
+        root: 'dist',
+        livereload: true
     });
 });
 
