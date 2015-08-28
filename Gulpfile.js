@@ -1,35 +1,40 @@
+var fs = require('fs');
 var gulp = require('gulp');
-var react = require('gulp-react');
 var sass = require('gulp-sass');
+var react = require('gulp-react');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
-var fs = require('fs');
 
 function getFiles(dir){
     return fs.readdirSync(dir);
 }
 
-gulp.task('react', function(){
-    return gulp.src('./jsx/**/*.jsx')
-    .pipe(react())
-    .pipe(gulp.dest('./scripts/components'));
-});
-
 gulp.task('sass', function () {
-    return gulp.src('./sass/main.scss')
+    gulp.src('./sass/main.scss')
     .pipe(sass())
     .pipe(gulp.dest('./dist/css'));
 });
 
-gulp.task('scripts', function() {
-    var b = browserify({
-        debug: true
-    });
-
-    return b.bundle()
-        .pipe(source('./scripts/main.js'))
-        .pipe(gulp.dest('./dist/js'));
+gulp.task('react', function(){
+    gulp.src('./jsx/**/*.jsx')
+    .pipe(react())
+    .pipe(gulp.dest('./scripts/components'));
 });
 
+gulp.task('scripts', function() {
+    var dir = './scripts/app/';
+    var files = getFiles(dir);
+    files.forEach(function(file){
+        browserify([dir + file]).bundle()
+        .pipe(source(file))
+        .pipe(gulp.dest('./dist/js/'));
+    });
+});
 
-gulp.task('default', ['react', 'sass', 'scripts']);
+gulp.task('watch', function() {
+    gulp.watch('./sass/**/*.scss', ['sass']);
+    gulp.watch('./jsx/**/*.jsx', ['react', 'scripts']);
+    gulp.watch('./scripts/**/*.js', ['scripts']);
+});
+
+gulp.task('default', ['sass', 'react', 'scripts']);
